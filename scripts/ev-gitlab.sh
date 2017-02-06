@@ -2,10 +2,11 @@
 
 # gitlab default user/pass: root/5iveL!fe
 # change => root/kiss1*7*1
-
+function ev-gitlab(){
+	__doc__ 本地 gitlab 服务控制命令
 case "$1" in
 "" | -h )
-	echo "Usage: ev gitlab [init | start | stop | attach]"
+	echo "Usage: ev-gitlab [init | start | stop | attach]"
 	echo
 	;;
 "init" )
@@ -53,4 +54,6 @@ case "$1" in
 "attach" )
 	docker exec -i -t ev-gitlab bash
 ;;
-esac
+esac	
+}
+

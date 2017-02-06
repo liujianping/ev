@@ -1,7 +1,9 @@
 #!/bin/bash
+function ev-mongo(){
+	__doc__ 本地mongo服务控制命令
 case "$1" in
 "" | -h )
-	echo "Usage: ev mongo [init | start | stop | attach]"
+	echo "Usage: ev-mongo [init | start | stop | attach]"
 	echo
 	;;
 "init" )
@@ -19,5 +21,7 @@ case "$1" in
 "attach" )
 	docker exec -i -t ev-mongo bash
 ;;
-esac
+esac	
+}
+
 

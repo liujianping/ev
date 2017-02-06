@@ -5,55 +5,9 @@ if [[ "$BASH_SOURCE[0]" == "" ]]; then
 else
 	export _EV_HOME=$(cd $(dirname $BASH_SOURCE[0]) 2>&1 >/dev/null; pwd)
 fi
+export __exec="eval"
 
-_ev_init_() {
-	_debug_off_
-	if [[ "$_ev_inited" != "" ]]; then
-		return 0
-	fi
-	mkdir -p $_EV_HOME/scripts
-	mkdir -p $_EV_HOME/volumns
-	if [[ "$_ev_slogan" != "0" ]]; then
-	echo
-	echo "+-+-+-+-+-+-+-+-+-+-+		";
-	echo "|ev home => $_EV_HOME		";
-	echo "+-+-+-+-+-+-+-+-+-+-+		";
-	echo
-	fi
-	#source $_dockerize_home/scripts/env.sh
-	export _ev_inited=1
-}
-
-_ev_exec_() {
-	$@
-	ret=$?
-	if [[ "$ret" == "0" ]]; then
-		return 0
-	fi
-	exit $ret
-}
-
-_debug_on_(){
-	export PS4='+${BASH_SOURCE}:${LINENO}:${FUNCNAME[0]}: '
-	set -x
-}
-
-_debug_off_(){
-	set +x
-}
-
-_add_command_(){
-	for i in "$@"; do
-	    cmd=$_EV_HOME/scripts/ev-$i.sh
-	    if [ -e "$cmd" ]; then
-	    	echo "sorry, $i already exist."	
-	    fi
-	    touch $cmd
-	    chmod +x $cmd
-	    echo "#!/bin/bash" >> $cmd
-	    echo "echo 'please complete command: $i'" >> $cmd
-	done
-}
+. $_EV_HOME/scripts/libs
 
 _ev_complete_() {
   COMPREPLY=( $(compgen -W "$(ev commands)" -- "$word") )
@@ -72,20 +26,26 @@ function ev() {
 	command="$1"
 	case "$command" in 
 	"" )
-		_ev_exec_ cd $_EV_HOME
+		$__exec "cd $_EV_HOME"
 		;;
 	-v | --version )
-		_ev_exec_ echo "ev version 0.0.1"
+		$__exec "echo 'ev version 0.0.1'"
 		;;
 	"add" )
 		shift
 		_add_command_ $@
 		;;
+	"rm" )
+		shift
+		_rm_command_ $@
+		;;
 	* )
 		command_path=$_EV_HOME/scripts/ev-$command.sh
 		if [ -x "$command_path" ]; then
+			. $command_path
 			shift
-			_ev_exec_ $command_path $@
+			eval "ev-$command $@"
+			#eval "$command_path $@"
 			return 
 		fi
 		
@@ -93,7 +53,9 @@ function ev() {
 	esac
 }
 
-
-function mysql-cli(){
-	mysql -h127.0.0.1 -P3306 -uroot -p123456
+function ev-help(){
+	__doc__ 显示辅助函数
+	declare -f | egrep '^ev-\w+' -A 1 | awk 'BEGIN{name=""; doc=""} /--/ {print name"\t"doc; doc=""; name=""} /__doc__/ {for(i=2;i<=NF;i++) doc=doc" "$i} /\(\)/ {name=$1} END{print name"\t"doc}' | column -t -s "	"| sort 
 }
+
+

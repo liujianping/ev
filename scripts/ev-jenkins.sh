@@ -1,7 +1,9 @@
 #!/bin/bash
+function ev-jenkins(){
+	__doc__ 本地jenkins服务控制命令
 case "$1" in
 "" | -h )
-	echo "Usage: ev jenkins [init | start | stop | attach]"
+	echo "Usage: ev-jenkins [init | start | stop | attach]"
 	echo
 	;;
 "init" )
@@ -21,4 +23,5 @@ case "$1" in
 "attach" )
 	docker exec -i -t ev-jenkins bash
 ;;
-esac
+esac	
+}

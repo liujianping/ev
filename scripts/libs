@@ -1,0 +1,75 @@
+#!/bin/bash
+
+_ev_init_() {
+	_debug_off_
+	if [[ "$_ev_inited" != "" ]]; then
+		return 0
+	fi
+	mkdir -p $_EV_HOME/scripts
+	mkdir -p $_EV_HOME/volumns
+	if [[ "$_ev_slogan" != "0" ]]; then
+	echo
+	echo "+-+-+-+-+-+-+-+-+-+-+		";
+	echo "|ev home => $_EV_HOME		";
+	echo "+-+-+-+-+-+-+-+-+-+-+		";
+	echo
+	fi
+	export _ev_inited=1
+}
+
+
+_debug_on_(){
+	export PS4='+${BASH_SOURCE}:${LINENO}:${FUNCNAME[0]}: '
+	set -x
+	export __exec="echo"
+}
+
+_debug_off_(){
+	set +x
+	export __exec="eval"
+}
+
+__doc__(){
+	echo -n
+}
+
+_add_command_(){
+	command="$1"
+	case "$command" in 
+	"" )
+		echo "error: command name empty"
+		echo
+		return
+	;;
+	* )
+		command_path=$_EV_HOME/scripts/ev-$command.sh
+		if [ -e "$command_path" ]; then
+	    	echo "warn: $command already exist."
+	    	return	
+	    fi
+	    shift
+	    touch $command_path
+	    chmod +x $command_path
+	    echo "#!/bin/bash" >> $command_path
+	    echo >> $command_path
+	    echo "function ev-$command(){" >> $command_path
+	    echo "__doc__ $@" >> $command_path
+	    echo "echo 'please complete command: $command'" >> $command_path
+	    echo "}" >> $command_path
+	    echo >> $command_path
+	;;
+	esac
+}
+
+_rm_command_(){
+	mkdir -p $_EV_HOME/scripts/rms
+	for i in $@ ; do
+		unset -f ev-$i
+		if [ -e $_EV_HOME/scripts/ev-$i.sh ]; then
+			mv $_EV_HOME/scripts/ev-$i.sh $_EV_HOME/scripts/rms/$i
+		fi
+	done
+	echo "warn: remove commands $@"
+}
+
+
