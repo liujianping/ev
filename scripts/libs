@@ -17,6 +17,13 @@ _ev_init_() {
 	export _ev_inited=1
 }
 
+_ev_include_(){
+	cd $_EV_HOME/scripts
+	for f in * ; do 
+		. $_EV_HOME/scripts/$f
+	done
+	cd $_EV_HOME
+}
 
 _debug_on_(){
 	export PS4='+${BASH_SOURCE}:${LINENO}:${FUNCNAME[0]}: '

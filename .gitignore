@@ -1,4 +1,5 @@
 volumns/
 scripts/rms
+scripts/ev-ezbuy.sh
 scripts/ev-mine.sh
-scripts/ev-work.sh
+scripts/ev-ssh.sh

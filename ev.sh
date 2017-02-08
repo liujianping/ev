@@ -16,7 +16,8 @@ complete -F _ev_complete_ ev
 
 function ev() {
 	_ev_init_
-
+	_ev_include_
+	
 	case "$1" in
 	-d | --de*)
 	  _debug_on_

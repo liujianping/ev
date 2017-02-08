@@ -5,7 +5,7 @@ function ev-redis(){
 	__doc__ 本地 redis 服务控制命令
 	case "$1" in
 	"" | -h )
-		echo "Usage: ev-redis [init | start | stop | redis]"
+		echo "Usage: ev-redis [init | start | stop | cli]"
 		echo
 		;;
 	"init" )

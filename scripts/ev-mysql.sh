@@ -3,7 +3,7 @@ function ev-mysql(){
 	__doc__ 本地 mysql 服务控制命令
 	case "$1" in
 	"" | -h )
-		echo "Usage: ev-mysql [init | start | attach]"
+		echo "Usage: ev-mysql [init | start | stop | cli]"
 		echo
 		;;
 	"init" )
