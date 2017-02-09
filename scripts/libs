@@ -2,6 +2,19 @@
 
 _ev_init_() {
 	_debug_off_
+	if [ -z "$(type -p docker)" ]
+	then
+	  echo "Cannot find docker. Is docker installed and available in the PATH?"
+	  exit 1
+	fi
+
+	if [ -z "$(type -p jq)" ]
+	then
+	  echo "Cannot find jq. Is jq installed and available in the PATH?"
+	  echo "please install jq: brew install jq"
+	  exit 1
+	fi
+
 	if [[ "$_ev_inited" != "" ]]; then
 		return 0
 	fi

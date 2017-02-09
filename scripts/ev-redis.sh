@@ -11,7 +11,7 @@ function ev-redis(){
 	"init" )
 		docker stop ev-redis
 		docker rm ev-redis
-		docker run -d --name ev-redis -v $_EV_HOME/volumns/redis:/data -p 127.0.0.1:6379:6379 redis
+		docker run --network=ev-network --ip 192.168.1.101 --name ev-redis -v $_EV_HOME/volumns/redis:/data -p 127.0.0.1:6379:6379 -d redis
 	;;
 	"start" )
 		docker start ev-redis

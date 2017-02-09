@@ -9,7 +9,7 @@ function ev-mysql(){
 	"init" )
 		docker stop ev-mysql
 		docker rm ev-mysql
-		docker run --name ev-mysql -v $_EV_HOME/volumns/mysql:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=123456 -p 127.0.0.1:3306:3306 -d mysql:5.7
+		docker run --network=ev-network --ip 192.168.1.100 --name ev-mysql -v $_EV_HOME/volumns/mysql:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=123456 -p 127.0.0.1:3306:3306 -d mysql:5.7
 	;;
 	"start" )
 		docker start ev-mysql

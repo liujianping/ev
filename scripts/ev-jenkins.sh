@@ -10,12 +10,10 @@ case "$1" in
 	mkdir -p $_EV_HOME/volumns/jenkins
 	docker stop ev-jenkins
 	docker rm ev-jenkins
-	docker run -d --name ev-jenkins -p 8080:8080 -p 50000:50000 -v $_EV_HOME/volumns/jenkins_home:/var/jenkins_home jenkins
-	echo "please input: docker attach ev-jenkins , to find the init password"
+	docker run --network=ev-network --ip 192.168.1.111 -d --name ev-jenkins -p 8080:8080 -p 50000:50000 -v $_EV_HOME/volumns/jenkins_home:/var/jenkins_home jenkins
 ;;
 "start" )
 	docker start ev-jenkins
-	echo "jenkins: http://localhost:8080"
 ;;
 "stop" )
 	docker stop ev-jenkins
