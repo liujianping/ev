@@ -3,7 +3,7 @@ function ev-jenkins(){
 	__doc__ 本地jenkins服务控制命令
 case "$1" in
 "" | -h )
-	echo "Usage: ev-jenkins [init | start | stop | attach]"
+	echo "Usage: ev-jenkins [init | start | stop | open]"
 	echo
 	;;
 "init" )
@@ -18,8 +18,10 @@ case "$1" in
 "stop" )
 	docker stop ev-jenkins
 ;;
-"attach" )
-	docker exec -i -t ev-jenkins bash
+"open" )
+	echo "use <admin:admin> login ...."
+	open http://127.0.0.1:8080
 ;;
 esac	
 }
+complete -W "init start stop open" ev-jenkins
